@@ -19,6 +19,7 @@ import com.huaji.phonetester.R;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class HomeFragment extends Fragment {
     public String androidversion= Build.VERSION.RELEASE;//获取安卓版本
@@ -26,7 +27,11 @@ public class HomeFragment extends Fragment {
     public String mobilephone1=Build.BRAND;//获取手机品牌
     public String cpu[]=getCpuInfo();
     public String cpumodel=cpu[0];
-    public String cpuclock=cpu[1];
+    public String str1=getvalidCpuFreq();
+    public double cpuclock1=Integer.parseInt(str1);
+    double cpuspeed=cpuclock1/1000000;
+    public String cpuclock=String.format("%.2f",cpuspeed);
+
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,7 +41,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         TextView aversion1=root.findViewById(R.id.aversion1);
-        aversion1.setText("手机型号："+mobilephone1+mobilephone2 +"\n安卓版本："+androidversion+"\ncpu:"+cpumodel+cpuclock);
+        aversion1.setText("手机型号："+mobilephone1+mobilephone2 +"\n安卓版本："+androidversion+"\ncpu:"+cpumodel+"\n当前调度最高频率："+cpuclock+"ghz");
         return root;
     }
     /**
@@ -64,4 +69,24 @@ public class HomeFragment extends Fragment {
         Log.i("text", "cpuinfo:" + cpuInfo[0] + " " + cpuInfo[1]);
         return cpuInfo;
     }
+    public static String getvalidCpuFreq() {
+        String result = "";
+        ProcessBuilder cmd;
+        try {
+            String[] args = {"/system/bin/cat", "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"};
+            cmd = new ProcessBuilder(args);
+            Process process = cmd.start();
+            InputStream in = process.getInputStream();
+            byte[] re = new byte[24];
+            while (in.read(re) != -1) {
+                result = result + new String(re);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "N/A";
+        }
+
+        return result.trim();
+ }
 }
