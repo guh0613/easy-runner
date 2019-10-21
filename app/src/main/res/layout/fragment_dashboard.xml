@@ -4,16 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/rom_run"
+            android:layout_width="262dp"
+            android:layout_height="88dp"
+            android:layout_alignTop="@id/card2"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:onClick="romrun"
+            app:cardBackgroundColor="@android:color/holo_orange_light"
+            app:cardCornerRadius="15dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="立即开冲！"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card2"
+            android:layout_width="170dp"
+            android:layout_height="96dp"
+
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="80dp"
+            android:visibility="visible"
+            app:cardCornerRadius="15dp">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:gravity="center"
+                android:text="@string/core_version"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="45dp"
+                android:gravity="center"
+                android:text="@string/app_version"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
