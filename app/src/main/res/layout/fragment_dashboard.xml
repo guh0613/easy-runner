@@ -40,6 +40,29 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentRight="false"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            app:cardCornerRadius="15dp"
+            app:contentPaddingBottom="5dp"
+            app:contentPaddingLeft="5dp"
+            app:contentPaddingRight="5dp"
+            app:contentPaddingTop="5dp">
+
+            <TextView
+                android:id="@+id/aversion2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card2"
