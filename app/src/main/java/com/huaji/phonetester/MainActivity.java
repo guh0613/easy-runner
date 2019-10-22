@@ -1,6 +1,12 @@
 package com.huaji.phonetester;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,20 +18,37 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 public class MainActivity extends AppCompatActivity {
 public static long cpuscore=0;
 public static long zscore=0;
 public static long xscore=0;
+public static String perform="";
 
+public static String filepath="/sdcard/";
+File file=new File(filepath,"testfile");
+public static long wtspeed;
+public static long dqspeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {//活动启动时发生事件
@@ -40,15 +63,39 @@ public static long xscore=0;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        if (ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+            dialog.setTitle("权限授予");
+            dialog.setMessage("应用检测到你没有授予基本的储存权限。如果没有授予储存权限，将不能愉快地跑分。");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("明白了，授予", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new
+                            String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
+            });
+            dialog.setNegativeButton("老子就是不给", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(MainActivity.this, "(눈_눈)", Toast.LENGTH_SHORT).show();
 
+                }
+
+
+            });
+            dialog.show();
+        }
     }
 public void cpurun(View view){
 new cpuruntask().execute();
 }
 public void runcpu() {
-    for (int i = 0; i < 200; i++) {
-        for(int x=0;x<1500000;x++){
-            double m=Math.pow(2,999);
+    for (int i = 0; i < 100; i++) {
+        int x = 0;
+        while (x < 1600000) {
+            double m = Math.pow(2, 999);
+            x++;
         }
     }
     }
@@ -56,9 +103,7 @@ public void runcpu() {
         long time1=System.currentTimeMillis();
         while(true){
             long time2=System.currentTimeMillis();
-            if(time2-time1>15000){
-                break;
-            }
+            if(time2-time1>15000) break;
 
         }
     }
@@ -79,25 +124,25 @@ pi(10000);
         ProgressDialog progressDialog=new ProgressDialog(MainActivity.this);
         @Override
         protected void onPreExecute(){
-            progressDialog.setMessage("CPU优化中....");
+            progressDialog.setMessage("模拟使用环境...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
         @Override
         protected Long doInBackground(Void ... params){
             cpuup();
-            publishProgress("正在跑分...");
+            publishProgress("正在跑分（第1项/共2项）...");
             long Starttime=System.currentTimeMillis();
             runcpu();
             long Endtime=System.currentTimeMillis();
             long runningtime1=Endtime-Starttime;
-            publishProgress("正在跑分...(65%)");
+            publishProgress("正在跑分(第2项/共2项)...");
 long starttime=System.currentTimeMillis();
 cpu2();
 long endtime=System.currentTimeMillis();
 long runningtime2=endtime-starttime;
-double b=920000-Math.pow(runningtime1,1.15);
-double c=920000-Math.pow(runningtime2,1.15);
+double b=100000-runningtime1;
+double c=100000-runningtime2*2;
 zscore=(long) b;
 xscore=(long)c;
             return runningtime1+runningtime2;
@@ -109,11 +154,225 @@ xscore=(long)c;
         @Override
         protected void onPostExecute(Long result){
             progressDialog.dismiss();
-            cpuscore=(zscore+xscore)/2;
+            if(result<=30000){
+                cpuscore=150000+(100000-result);
+                zscore=zscore+100000;
+                xscore=xscore+50000;
+                perform="您的cpu属于：超高性能cpu";
+            }
+            else if(result>30000){
+                 if(result<=60000){
+                 cpuscore=100000+(100000-result);
+                     zscore=zscore+80000;
+                     xscore=xscore+50000;
+                 perform="您的cpu属于：高性能cpu";
+                 }
+                 else{
+                     if(result<=90000){
+                         cpuscore=50000+(100000-result);
+                         zscore=zscore+50000;
+                         xscore=xscore+10000;
+                         perform="您的cpu属于：中高性能cpu";
+                     }
+                     else{
+                         if(result<=120000){
+                             cpuscore=10000+(120000-result);
+                             zscore=zscore+30000;
+                             xscore=xscore+15000;
+                             perform="您的cpu属于：中低性能cpu";
+                         }
+                         else{
+                             long noscore=(long)(Math.random()*5000+1);
+                             cpuscore=noscore;
+                             zscore=(long)(Math.random()*5000+1)+500;
+                             xscore=(long)(Math.random()*5000+1)+500;
+                             perform="您的cpu属于：低性能cpu";
+                         }
+                     }
+                 }
+              }
+            String cpudot=String.valueOf(cpuscore);
+            String zsdot=String.valueOf(zscore);
+            String xsdot=String.valueOf(xscore);
 
-            String result2=String.valueOf(cpuscore);
+            final AlertDialog.Builder progressDialog1=new AlertDialog.Builder(MainActivity.this);
+             progressDialog1.setTitle("跑分结果");
+             progressDialog1.setMessage("cpu综合得分："+cpudot+"\n整数运算综合得分："+zsdot+"\n浮点运算综合得分："+xsdot+"\n"+perform);
+             progressDialog1.setCancelable(false);
+             progressDialog1.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
 
-            Toast.makeText(MainActivity.this,result2,Toast.LENGTH_SHORT).show();
+                 }
+             });
+             progressDialog1.show();
         }
     }
+    //文件写入
+    public boolean createFile(String targetFile, long fileLength, String unit) {
+        //指定每次分配的块大小
+        long KBSIZE = 1024;
+        long MBSIZE1 = 1024 * 1024;
+        long MBSIZE10 = 1024 * 1024 * 10;
+        long MBSIZE100=1024*1024*100;
+        if(unit=="KB")
+        {
+            fileLength = fileLength * 1024;
+        }
+        if(unit=="MB")
+        {
+            fileLength = fileLength * 1024*1024;
+        }
+        if(unit=="GB")
+        {
+            fileLength = fileLength * 1024*1024*1024;
+        }
+        if (unit=="TB")
+        {
+            fileLength=fileLength*1024*1024*1024*1024;
+        }
+
+
+        FileOutputStream fos = null;
+        File file = new File(targetFile);
+        try {
+//如果文件存在
+            if
+            (!file.exists()) {
+                file.createNewFile();
+            }
+
+            long batchSize = 0;
+            batchSize = fileLength;
+            if (fileLength > KBSIZE) {
+                batchSize = KBSIZE;
+            }
+            if (fileLength > MBSIZE1) {
+                batchSize = MBSIZE1;
+            }
+            if (fileLength > MBSIZE10) {
+                batchSize = MBSIZE10;
+            }
+            if (fileLength >MBSIZE100){
+                batchSize = MBSIZE100;
+            }
+            long count = fileLength / batchSize;
+            long last = fileLength % batchSize;
+
+            fos = new FileOutputStream(file);
+            FileChannel fileChannel = fos.getChannel();
+            for (int i = 0; i < count; i++) {
+                ByteBuffer buffer = ByteBuffer.allocate((int) batchSize);
+                fileChannel.write(buffer);
+
+            }
+            if (last != 0) {
+                ByteBuffer buffer = ByteBuffer.allocate((int) last);
+                fileChannel.write(buffer);
+            }
+            fos.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        }
+        return false;
+    }
+    public String saveImage(String imgPath) {
+        long startTime = System.currentTimeMillis();//开始读取时间
+        long endTime = 0L;
+
+        try {
+            FileInputStream inputStream = new FileInputStream(imgPath);//图片输入流
+            FileOutputStream outputStream = new FileOutputStream(filepath+"testfile2");
+            int size = inputStream.available();//得到文件总大小
+            byte[] buff = new byte[size];
+            inputStream.read(buff);
+            outputStream.write(buff);
+            inputStream.close();
+            outputStream.close();
+            endTime = System.currentTimeMillis();//读取结束时间
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "整体读取耗时："+(endTime-startTime) + "ms";
+    }
+
+
+    class romruntask extends AsyncTask<Void,String,Long>{
+        ProgressDialog progressDialog=new ProgressDialog(MainActivity.this);
+        @Override
+        protected void onPreExecute(){
+            progressDialog.setMessage("清理缓存...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+        @Override
+        protected Long doInBackground(Void ... params){
+
+            publishProgress("正在跑分（第1项/共2项）...");
+            long Starttime=System.currentTimeMillis();
+            createFile(filepath+"testfile",200,"MB");
+            long Endtime=System.currentTimeMillis();
+            long runningtime1=Endtime-Starttime;
+
+          wtspeed=200/(runningtime1/200);
+            publishProgress("正在跑分(第2项/共2项)...");
+            long starttime=System.currentTimeMillis();
+
+                saveImage(filepath+"testfile");
+
+            long endtime=System.currentTimeMillis();
+            long runningtime2=endtime-starttime;
+             dqspeed=200/(runningtime2/200);
+
+if(file.exists()){
+    file.delete();
+            }
+File file2=new File(filepath,"testfile2");
+if(file2.exists()){
+    file2.delete();
+}
+            return (wtspeed+dqspeed)/2;
+        }
+        @Override
+        protected  void onProgressUpdate(String... values){
+            progressDialog.setMessage(values[0]);
+        }
+        @Override
+        protected void onPostExecute(Long result){
+            progressDialog.dismiss();
+long zhspeed=(long)Math.pow(result,2.5);
+            String cpudot=String.valueOf(zhspeed);
+            String xrdot=String.valueOf(wtspeed)+"MB/s";
+            String dqdot=String.valueOf(dqspeed)+"MB/s";
+
+            final AlertDialog.Builder progressDialog1=new AlertDialog.Builder(MainActivity.this);
+            progressDialog1.setTitle("跑分结果");
+            progressDialog1.setMessage("内存综合得分："+cpudot+"\n写入速度："+xrdot+"\n读取速度："+dqdot);
+            progressDialog1.setCancelable(false);
+            progressDialog1.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            progressDialog1.show();
+        }
+    }
+public void romrun(View view){
+        new romruntask().execute();
+}
+
 }
