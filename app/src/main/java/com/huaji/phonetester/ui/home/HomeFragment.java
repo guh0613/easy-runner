@@ -28,6 +28,7 @@ public class HomeFragment extends Fragment {
     public String cpu[]=getCpuInfo();
     public String cpumodel=cpu[0];
     public String str1=getvalidCpuFreq();
+
     public double cpuclock1=Integer.parseInt(str1);
     double cpuspeed=cpuclock1/1000000;
     public String cpuclock=String.format("%.2f",cpuspeed);
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
         return cpuInfo;
     }
     public static String getvalidCpuFreq() {
-        String result = "";
+        String result = "0";
         ProcessBuilder cmd;
         try {
             String[] args = {"/system/bin/cat", "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"};
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment {
             in.close();
         } catch (Exception e) {
             e.printStackTrace();
-            result = "N/A";
+            result = "0";
         }
 
         return result.trim();
