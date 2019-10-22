@@ -46,7 +46,7 @@ public void cpurun(View view){
 new cpuruntask().execute();
 }
 public void runcpu() {
-    for (int i = 0; i < 110; i++) {
+    for (int i = 0; i < 200; i++) {
         for(int x=0;x<1500000;x++){
             double m=Math.pow(2,999);
         }
@@ -96,8 +96,8 @@ long starttime=System.currentTimeMillis();
 cpu2();
 long endtime=System.currentTimeMillis();
 long runningtime2=endtime-starttime;
-double b=920000-Math.pow(runningtime1,1.3);
-double c=920000-Math.pow(runningtime2,1.3);
+double b=920000-Math.pow(runningtime1,1.15);
+double c=920000-Math.pow(runningtime2,1.15);
 zscore=(long) b;
 xscore=(long)c;
             return runningtime1+runningtime2;
