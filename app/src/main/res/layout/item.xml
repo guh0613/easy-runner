@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:orientation="horizontal"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="80dp"
+
+        android:id="@+id/layout"
+
+        android:descendantFocusability="blocksDescendants"
+
+        android:clickable="true"
+
+        android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="80dp"
+
+        android:orientation="vertical"
+
+
+        >
+
+
+        <TextView
+
+            android:id="@+id/score"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="40sp"
+
+            android:layout_gravity="top"
+
+            android:layout_marginBottom="10sp"
+
+            android:text="跑分分数"
+
+            android:textColor="#000000"
+
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="35dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+
+                android:id="@+id/type"
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="32dp"
+
+                android:layout_gravity="top"
+
+                android:text="类型"
+
+                android:textColor="#000000"
+
+                android:textSize="22.5sp" />
+
+            <TextView
+
+                android:id="@+id/time"
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="32dp"
+
+                android:layout_gravity="top"
+
+                android:text="时间"
+
+                android:textColor="#000000"
+
+                android:textSize="22.5sp"
+
+                android:layout_marginLeft="5sp"/>
+
+            <TextView
+
+                android:id="@+id/BB"
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="32dp"
+
+                android:layout_gravity="top"
+
+                android:text="内核版本"
+
+                android:textColor="#000000"
+
+                android:textSize="22.5sp"
+
+                android:layout_marginLeft="5sp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+<LinearLayout
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="80dp"
+
+    android:gravity="center">
+</LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="0.1" encoding="utf-8"?>
+<litepal>
+    <dbname value="History" />
+    <version value="1" />
+    <list>
+        <mapping class="com.huaji.phonetester.History"></mapping>
+    </list>
+    <!--<storage value="history/database" />-->
+</litepal>

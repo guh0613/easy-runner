@@ -25,6 +25,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.litepal.LitePal;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -38,12 +40,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 public static long cpuscore=0;
 public static long zscore=0;
 public static long xscore=0;
 public static String perform="";
+public static String BB = "内核BB:1.0";
 
 public static String filepath="/sdcard/";
 File file=new File(filepath,"testfile");
@@ -198,6 +202,12 @@ xscore=(long)c;
             final AlertDialog.Builder progressDialog1=new AlertDialog.Builder(MainActivity.this);
              progressDialog1.setTitle("跑分结果");
              progressDialog1.setMessage("cpu综合得分："+cpudot+"\n整数运算综合得分："+zsdot+"\n浮点运算综合得分："+xsdot+"\n"+perform);
+             History HP = new History();
+             HP.setScore(cpuscore);
+             HP.setBB(BB);
+             HP.setTime(Calendar.getInstance().get(Calendar.YEAR)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.DATE)+"|"+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+":"+Calendar.getInstance().get(Calendar.MINUTE));
+             HP.setType(0);
+             HP.save();
              progressDialog1.setCancelable(false);
              progressDialog1.setPositiveButton("好的", new DialogInterface.OnClickListener() {
                  @Override
@@ -206,6 +216,7 @@ xscore=(long)c;
                  }
              });
              progressDialog1.show();
+
         }
     }
     //文件写入
@@ -369,6 +380,13 @@ long zhspeed=(long)Math.pow(result,2.5);
                 }
             });
             progressDialog1.show();
+            History HP = new History();
+            HP.setScore(Long.valueOf(cpudot));
+            HP.setBB(BB);
+            HP.setTime(Calendar.getInstance().get(Calendar.YEAR)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.DATE)+"|"+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+":"+Calendar.getInstance().get(Calendar.MINUTE));
+            HP.setType(1);
+            HP.save();
+
         }
     }
 public void romrun(View view){
