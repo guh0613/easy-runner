@@ -97,8 +97,12 @@ new cpuruntask().execute();
 public void runcpu() {
     for (int i = 0; i < 100; i++) {
         int x = 0;
-        while (x < 1600000) {
-            double m = Math.pow(2, 999);
+        int y=0;
+        while (x < 16000000) {
+            while ( y <2560000){
+                double m = Math.pow(2, 99999);
+                y++;
+            }
             x++;
         }
     }
@@ -121,7 +125,11 @@ public void runcpu() {
         return p*4;
     }
     public void cpu2(){
-pi(10000);
+        int m = 0;
+        while(m < 10) {
+            pi(1000000000);
+            m++;
+        }
     }
 
     class cpuruntask extends AsyncTask<Void,String,Long>{
