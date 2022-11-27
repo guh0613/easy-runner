@@ -3,6 +3,6 @@
     <string name="title_home">CPU</string>
     <string name="title_dashboard">内存</string>
     <string name="title_notifications">历史</string>
-    <string name="core_version">内核版本：1.0</string>
+    <string name="core_version">内核版本：2.0</string>
     <string name="app_version">APP版本：1.01</string>
 </resources>

@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 public static long cpuscore=0;
 public static long zscore=0;
 public static long xscore=0;
+public static long runningtime1=0;
+public static  long runningtime2=0;
 public static String perform="";
 public static String BB = "内核BB:1.0";
 
@@ -147,14 +149,14 @@ public void runcpu() {
             long Starttime=System.currentTimeMillis();
             runcpu();
             long Endtime=System.currentTimeMillis();
-            long runningtime1=Endtime-Starttime;
+            runningtime1=Endtime-Starttime;
             publishProgress("正在跑分(第2项/共2项)...");
 long starttime=System.currentTimeMillis();
 cpu2();
 long endtime=System.currentTimeMillis();
-long runningtime2=endtime-starttime;
-double b=100000-runningtime1;
-double c=100000-runningtime2*2;
+runningtime2=endtime-starttime;
+double b=1000000-runningtime1*40;
+double c=1000000-runningtime2*40;
 zscore=(long) b;
 xscore=(long)c;
             return runningtime1+runningtime2;
@@ -167,38 +169,38 @@ xscore=(long)c;
         protected void onPostExecute(Long result){
             progressDialog.dismiss();
             if(result<=30000){
-                cpuscore=150000+(100000-result);
-                zscore=zscore+100000;
-                xscore=xscore+50000;
-                perform="您的cpu属于：超高性能cpu";
+                cpuscore=2000000-(runningtime1*15+runningtime2*65);
+                zscore=zscore;
+                xscore=xscore;
+                perform="一眼丁真，鉴定为：超高性能cpu";
             }
             else if(result>30000){
                  if(result<=60000){
-                 cpuscore=100000+(100000-result);
-                     zscore=zscore+80000;
-                     xscore=xscore+50000;
-                 perform="您的cpu属于：高性能cpu";
+                     cpuscore=2000000-(runningtime1*15+runningtime2*65);
+                     zscore=zscore;
+                     xscore=xscore;
+                 perform="一眼丁真，鉴定为：高性能cpu";
                  }
                  else{
                      if(result<=90000){
-                         cpuscore=50000+(100000-result);
-                         zscore=zscore+50000;
-                         xscore=xscore+10000;
-                         perform="您的cpu属于：中高性能cpu";
+                         cpuscore=2000000-(runningtime1*15+runningtime2*65);
+                         zscore=zscore;
+                         xscore=xscore;
+                         perform="一眼丁真，鉴定为：中高性能cpu";
                      }
                      else{
                          if(result<=120000){
-                             cpuscore=10000+(120000-result);
-                             zscore=zscore+30000;
-                             xscore=xscore+15000;
-                             perform="您的cpu属于：中低性能cpu";
+                             cpuscore=2000000-(runningtime1*15+runningtime2*65);
+                             zscore=zscore;
+                             xscore=xscore;
+                             perform="一眼丁真，鉴定为：中低性能cpu";
                          }
                          else{
                              long noscore=(long)(Math.random()*5000+1);
                              cpuscore=noscore;
                              zscore=(long)(Math.random()*5000+1)+500;
                              xscore=(long)(Math.random()*5000+1)+500;
-                             perform="您的cpu属于：低性能cpu";
+                             perform="一眼丁真，鉴定为：低性能cpu";
                          }
                      }
                  }
@@ -398,7 +400,7 @@ long zhspeed=(long)Math.pow(result,2.5);
         }
     }
 public void romrun(View view){
-        new romruntask().execute();
+        Toast.makeText(MainActivity.this,"施工中",Toast.LENGTH_SHORT).show();
 }
 
 }
